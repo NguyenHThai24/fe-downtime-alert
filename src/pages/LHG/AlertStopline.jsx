@@ -7,7 +7,7 @@ const AlertStopline = () => {
 	return (
 		<div className="">
 			<StoplineTitle />
-			<main className="mx-4 my-4 border-2 rounded-2xl border-black min-h-[500px] bg-red-600">
+			<main className="mx-4 my-4 border-4 rounded-2xl border-[#002b5c] min-h-[500px] bg-red-600">
 				<div className="">
 					<ListLean />
 				</div>

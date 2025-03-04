@@ -15,13 +15,13 @@ const LineSelector = () => {
 	return (
 		<div className="flex flex-col items-center">
 			<button
-				className="w-24 h-24 rounded-full bg-blue-500 text-white text-xl font-bold shadow-lg"
+				className="w-24 h-24 rounded-full bg-[#002b5c] text-white text-2xl font-bold shadow-lg"
 				onClick={() => setIsOpen(!isOpen)}>
 				Line
 			</button>
 
 			<div
-				className="relative w-24 h-12 bg-blue-600 text-white text-2xl font-bold flex items-center justify-center mt-2"
+				className="relative w-24 h-12 bg-[#002b5c] text-white text-2xl font-bold flex items-center justify-center mt-2"
 				style={{
 					clipPath: 'ellipse(100% 50% at 50% 50%)',
 				}}>

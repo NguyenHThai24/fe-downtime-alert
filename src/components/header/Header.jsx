@@ -8,7 +8,7 @@ const Header = () => {
 		<div className="flex items-center justify-center gap-3 p-2  shadow-lg rounded-md text-blue-900">
 			<AlertTriangle
 				size={32}
-				className="text-yellow-400 animate-bounce"
+				className="text-red-600 animate-bounce"
 			/>
 			<h1 className="font-extrabold text-5xl uppercase tracking-wide">
 				LHG Alert
