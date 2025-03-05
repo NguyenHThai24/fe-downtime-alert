@@ -9,7 +9,7 @@ const AlertDowntime = () => {
 	return (
 		<div className="">
 			<DowntimeTitle />
-			<main className="mx-4 my-4 p-4 grid grid-cols-12 border-4 border-[#002b5c] bg-blue-600 rounded-2xl  min-h-[500px]">
+			<main className="mx-2 my-4 p-4 grid grid-cols-12 border-4 border-[#002b5c] bg-blue-200 rounded-2xl  min-h-[550px]">
 				<div className="col-span-2">
 					<FloorSelector />
 				</div>

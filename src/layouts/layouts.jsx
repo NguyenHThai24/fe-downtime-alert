@@ -6,9 +6,9 @@ import Header from '../components/header/Header';
 
 const Layouts = () => {
 	return (
-		<div>
+		<div className="">
 			<Header />
-			<div className="bg-blue-800 h-[100vh]">
+			<div className="">
 				<Outlet />
 			</div>
 		</div>
