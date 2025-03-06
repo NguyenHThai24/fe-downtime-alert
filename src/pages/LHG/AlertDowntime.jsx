@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DowntimeTitle from '../../components/downtime/DowntimeTitle';
 import FloorSelector from '../../components/downtime/FloorSelector';
 import LineSelector from '../../components/downtime/LineSelector';
-
+import * as signalR from '@microsoft/signalr';
 import {
   fetchDataDownTime,
   fetchListFloorLine,
