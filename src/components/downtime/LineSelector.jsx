@@ -15,7 +15,9 @@ const LineSelector = ({ listLine, onSelectLine }) => {
     }
   }, [onSelectLine]);
 
-  const uniqueLines = [...new Set(listLine.map((item) => item.line))];
+  const uniqueLines = Array.isArray(listLine)
+    ? [...new Set(listLine.map((item) => item.line))]
+    : [];
 
   const handleSelect = (value) => {
     setSelectedValue(value);
@@ -44,15 +46,19 @@ const LineSelector = ({ listLine, onSelectLine }) => {
 
       {isOpen && (
         <div className="absolute top-full mt-2 w-28 text-white border-2 bg-blue-800 border-blue-800 shadow-md rounded-md h-56 overflow-auto z-50">
-          {uniqueLines.map((line) => (
-            <div
-              key={line}
-              className="p-2 hover:bg-white hover:text-black cursor-pointer text-center"
-              onClick={() => handleSelect(line)}
-            >
-              {line}
-            </div>
-          ))}
+          {uniqueLines.length > 0 ? (
+            uniqueLines.map((line) => (
+              <div
+                key={line}
+                className="p-2 hover:bg-white hover:text-black cursor-pointer text-center"
+                onClick={() => handleSelect(line)}
+              >
+                {line}
+              </div>
+            ))
+          ) : (
+            <div className="p-2 text-center text-gray-300">No data</div>
+          )}
         </div>
       )}
     </div>

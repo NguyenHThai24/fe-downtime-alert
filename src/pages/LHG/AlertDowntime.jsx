@@ -9,6 +9,8 @@ import {
 } from '../../apis/AlertDowntime';
 import Cookies from 'js-cookie';
 
+import ThoMay from '../../assets/tho-may.png';
+
 const FLOOR_COOKIE = 'floorDowntime';
 const LINE_COOKIE = 'lineDowntime';
 const COOKIE_EXPIRY_DAYS = 1;
@@ -82,7 +84,7 @@ const AlertDowntime = () => {
         <div className="grid grid-cols-12">
           <div className="col-span-2 relative">
             <FloorSelector
-              listFloor={listFloor}
+              listFloor={listFloor || []}
               onSelectFloor={handleFloorSelect}
               selectedFloor={selectedFloor}
             />
@@ -109,13 +111,21 @@ const AlertDowntime = () => {
                 </p>
               </div>
             ) : (
-              <p className="text-gray-600">Không có sự cố máy</p>
+              <div>
+                <p className="text-gray-600 text-2xl">Không có sự cố máy!!!</p>
+                <img
+                  src={ThoMay}
+                  width="200px"
+                  alt=""
+                  style={{ margin: '0 auto' }}
+                />
+              </div>
             )}
           </div>
 
           <div className="col-span-2 relative">
             <LineSelector
-              listLine={listFloor}
+              listLine={listFloor || []}
               onSelectLine={handleLineSelect}
               selectedLine={selectedLine}
             />
@@ -123,7 +133,7 @@ const AlertDowntime = () => {
         </div>
 
         {/* Hiển thị bảng cho status = 2, 3, 4 */}
-        <div className="col-span-8 text-center mt-4 z-0">
+        <div className="col-span-8 text-center mt-4 z-0 bg-amber-50 p-1.5">
           {status234Data.length > 0 ? (
             <div className="overflow-y-auto h-[400px]">
               <table className="min-w-full bg-white border border-black shadow-md rounded-lg">
@@ -176,7 +186,7 @@ const AlertDowntime = () => {
               </table>
             </div>
           ) : (
-            <p className="text-gray-600">Không có sự cố !!!</p>
+            <p className="text-gray-600"></p>
           )}
         </div>
       </main>

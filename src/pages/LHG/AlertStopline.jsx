@@ -150,7 +150,7 @@ const AlertStopline = () => {
                   📅 Thời gian ngưng chuyền
                 </p>{' '}
                 <p className="font-bold text-4xl text-right">
-                  {new Date(dataLean.startDate).toLocaleTimeString('vi-VN')}
+                  {new Date(dataLean.startDate)?.toLocaleTimeString('vi-VN')}
                 </p>
               </Card>
               <Card

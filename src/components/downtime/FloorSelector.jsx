@@ -15,13 +15,15 @@ const FloorSelector = ({ listFloor, onSelectFloor }) => {
     }
   }, [onSelectFloor]);
 
-  const uniqueFloors = [...new Set(listFloor.map((item) => item.floor))];
+  const uniqueFloors = Array.isArray(listFloor)
+    ? [...new Set(listFloor.map((item) => item.floor))]
+    : [];
 
   const handleSelect = (value) => {
     setSelectedValue(value);
     onSelectFloor(value);
     Cookies.set(FLOOR_COOKIE, value, { expires: 1 });
-    setIsOpen(false); // Đóng dropdown sau khi chọn
+    setIsOpen(false);
   };
 
   return (
@@ -39,20 +41,24 @@ const FloorSelector = ({ listFloor, onSelectFloor }) => {
           clipPath: 'ellipse(100% 50% at 50% 50%)',
         }}
       >
-        {selectedValue}
+        {selectedValue || ' '}
       </div>
 
       {isOpen && (
         <div className="absolute top-full mt-2 w-28 text-white border-2 bg-blue-800 border-blue-800 shadow-md rounded-md h-56 overflow-auto z-50">
-          {uniqueFloors.map((floor) => (
-            <div
-              key={floor}
-              className="p-2 hover:bg-white hover:text-black cursor-pointer text-center"
-              onClick={() => handleSelect(floor)}
-            >
-              {floor}
-            </div>
-          ))}
+          {uniqueFloors.length > 0 ? (
+            uniqueFloors.map((floor) => (
+              <div
+                key={floor}
+                className="p-2 hover:bg-white hover:text-black cursor-pointer text-center"
+                onClick={() => handleSelect(floor)}
+              >
+                {floor}
+              </div>
+            ))
+          ) : (
+            <div className="p-2 text-center text-gray-300">No data</div>
+          )}
         </div>
       )}
     </div>
