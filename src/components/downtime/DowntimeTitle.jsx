@@ -3,11 +3,11 @@
 import React from 'react';
 
 const DowntimeTitle = () => {
-	return (
-		<div className="relative w-full h-20 bg-[#002b5c] text-white flex justify-center items-center rounded-b-full">
-			<h2 className="text-3xl font-bold tracking-wide">DOWN TIME</h2>
-		</div>
-	);
+  return (
+    <div className="relative w-full h-16 bg-[#002b5c] text-white flex justify-center items-center rounded-b-full">
+      <h2 className="text-3xl font-bold tracking-wide">DOWN TIME</h2>
+    </div>
+  );
 };
 
 export default DowntimeTitle;

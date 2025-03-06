@@ -1,48 +1,62 @@
-/** @format */
+import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
-import React, { useState } from 'react';
+const LINE_COOKIE = 'lineDowntime';
 
-const LineSelector = () => {
-	const [selectedValue, setSelectedValue] = useState('');
-	const [isOpen, setIsOpen] = useState(false);
-	const options = ['1', '2', '3', '4', '5'];
+const LineSelector = ({ listLine, onSelectLine }) => {
+  const [selectedValue, setSelectedValue] = useState('');
+  const [isOpen, setIsOpen] = useState(false);
 
-	const handleSelect = (value) => {
-		setSelectedValue(value);
-		setIsOpen(false);
-	};
+  useEffect(() => {
+    const savedLine = Cookies.get(LINE_COOKIE);
+    if (savedLine) {
+      setSelectedValue(savedLine);
+      onSelectLine(savedLine);
+    }
+  }, [onSelectLine]);
 
-	return (
-		<div className="flex flex-col items-center">
-			<button
-				className="w-24 h-24 rounded-full bg-[#002b5c] text-white text-2xl font-bold shadow-lg"
-				onClick={() => setIsOpen(!isOpen)}>
-				Line
-			</button>
+  const uniqueLines = [...new Set(listLine.map((item) => item.line))];
 
-			<div
-				className="relative w-24 h-12 bg-[#002b5c] text-white text-2xl font-bold flex items-center justify-center mt-2"
-				style={{
-					clipPath: 'ellipse(100% 50% at 50% 50%)',
-				}}>
-				{selectedValue}
-			</div>
+  const handleSelect = (value) => {
+    setSelectedValue(value);
+    onSelectLine(value);
+    Cookies.set(LINE_COOKIE, value, { expires: 1 });
+    setIsOpen(false);
+  };
 
-			{/* Dropdown options */}
-			{isOpen && (
-				<div className="mt-2 w-24 bg-white shadow-md rounded-md overflow-hidden">
-					{options.map((option) => (
-						<div
-							key={option}
-							className="p-2 hover:bg-blue-300 cursor-pointer text-center"
-							onClick={() => handleSelect(option)}>
-							{option}
-						</div>
-					))}
-				</div>
-			)}
-		</div>
-	);
+  return (
+    <div className="relative flex flex-col items-center">
+      <button
+        className="w-24 h-24 rounded-full bg-[#002b5c] text-white text-2xl font-bold shadow-lg"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        Line
+      </button>
+
+      <div
+        className="relative w-24 h-12 bg-[#002b5c] text-white text-2xl font-bold flex items-center justify-center mt-2"
+        style={{
+          clipPath: 'ellipse(100% 50% at 50% 50%)',
+        }}
+      >
+        {selectedValue}
+      </div>
+
+      {isOpen && (
+        <div className="absolute top-full mt-2 w-28 text-white border-2 bg-blue-800 border-blue-800 shadow-md rounded-md h-56 overflow-auto z-50">
+          {uniqueLines.map((line) => (
+            <div
+              key={line}
+              className="p-2 hover:bg-white hover:text-black cursor-pointer text-center"
+              onClick={() => handleSelect(line)}
+            >
+              {line}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
 };
 
 export default LineSelector;
