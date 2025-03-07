@@ -16,7 +16,9 @@ const AlertStopline = () => {
     Cookies.get(COOKIE_NAME) || ''
   );
   const [dataLean, setDataLean] = useState(null);
-
+  console.log('====================================');
+  console.log(dataLean);
+  console.log('====================================');
   useEffect(() => {
     const fetchData = async () => {
       try {
