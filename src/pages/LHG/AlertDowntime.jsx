@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DowntimeTitle from '../../components/downtime/DowntimeTitle';
 import FloorSelector from '../../components/downtime/FloorSelector';
 import LineSelector from '../../components/downtime/LineSelector';
-
+import * as signalR from '@microsoft/signalr';
 import {
   fetchDataDownTime,
   fetchListFloorLine,
@@ -37,22 +37,67 @@ const AlertDowntime = () => {
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   if (!selectedFloor || !selectedLine) return;
+
+  //   const connection = new signalR.HubConnectionBuilder()
+  //     .withUrl('https://your-server.com/downtimeHub') // Thay URL của SignalR server
+  //     .withAutomaticReconnect()
+  //     .build();
+
+  //   connection
+  //     .start()
+  //     .then(() => console.log('SignalR Connected'))
+  //     .catch((err) => console.error('SignalR Connection Error:', err));
+
+  //   connection.on('ReceiveDowntimeUpdate', (data) => {
+  //     console.log('Dữ liệu nhận được từ SignalR:', data);
+  //     setDataDowntime(data);
+
+  //     const hasError = data.some((item) => item.status === 1);
+  //     setIsError(hasError);
+  //   });
+
+  //   return () => {
+  //     connection.stop();
+  //   };
+  // }, [selectedFloor, selectedLine]);
   useEffect(() => {
-    let interval;
-    const fetchDataDowntime = async () => {
-      if (selectedFloor && selectedLine) {
+    if (!selectedFloor || !selectedLine) return;
+
+    const fetchInitialData = async () => {
+      try {
         const data = await fetchDataDownTime(selectedFloor, selectedLine);
         setDataDowntime(data);
-
-        // Kiểm tra nếu có sự cố (status === 1)
         const hasError = data.some((item) => item.status === 1);
         setIsError(hasError);
+      } catch (error) {
+        console.error('Lỗi khi lấy dữ liệu downtime:', error);
       }
     };
 
-    fetchDataDowntime();
-    interval = setInterval(fetchDataDowntime, 1000);
-    return () => clearInterval(interval);
+    fetchInitialData();
+
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl('https://your-server.com/downtimeHub')
+      .withAutomaticReconnect()
+      .build();
+
+    connection
+      .start()
+      .then(() => console.log('SignalR Connected'))
+      .catch((err) => console.error('SignalR Connection Error:', err));
+
+    connection.on('ReceiveDowntimeUpdate', (data) => {
+      console.log('Dữ liệu nhận được từ SignalR:', data);
+      setDataDowntime(data);
+      const hasError = data.some((item) => item.status === 1);
+      setIsError(hasError);
+    });
+
+    return () => {
+      connection.stop();
+    };
   }, [selectedFloor, selectedLine]);
 
   const handleFloorSelect = (floor) => {
@@ -84,7 +129,7 @@ const AlertDowntime = () => {
         <div className="grid grid-cols-12">
           <div className="col-span-2 relative">
             <FloorSelector
-              listFloor={listFloor}
+              listFloor={listFloor || []}
               onSelectFloor={handleFloorSelect}
               selectedFloor={selectedFloor}
             />
@@ -112,15 +157,25 @@ const AlertDowntime = () => {
               </div>
             ) : (
               <div>
+<<<<<<< HEAD
                 <p className="text-gray-900 text-[20px]">Không có sự cố máy</p>
                 <img src={ThoMay} width="150px" style={{ margin: '0 auto' }} />
+=======
+                <p className="text-gray-600 text-2xl">Không có sự cố máy!!!</p>
+                <img
+                  src={ThoMay}
+                  width="200px"
+                  alt=""
+                  style={{ margin: '0 auto' }}
+                />
+>>>>>>> 0d3321fe2e98f4ef75a3de95a9c26c57bf54be45
               </div>
             )}
           </div>
 
           <div className="col-span-2 relative">
             <LineSelector
-              listLine={listFloor}
+              listLine={listFloor || []}
               onSelectLine={handleLineSelect}
               selectedLine={selectedLine}
               selectedFloor={selectedFloor}

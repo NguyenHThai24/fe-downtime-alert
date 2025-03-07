@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import ListLean from '../../components/stopline/ListLean';
 import StoplineTitle from '../../components/stopline/StoplineTitle';
+import * as signalR from '@microsoft/signalr';
 
 import Cookies from 'js-cookie';
 import { fetchListLean, fetchDataLean } from '../../apis/AlertStopline';
@@ -32,7 +33,6 @@ const AlertStopline = () => {
   }, []);
 
   useEffect(() => {
-    let interval;
     const fetchLeanDetails = async () => {
       if (!selectedLean) return;
       try {
@@ -44,8 +44,25 @@ const AlertStopline = () => {
     };
 
     fetchLeanDetails();
-    interval = setInterval(fetchLeanDetails, 1000);
-    return () => clearInterval(interval);
+
+    const connection = new signalR.HubConnectionBuilder()
+      .withUrl('https://your-server.com/stoplineHub')
+      .withAutomaticReconnect()
+      .build();
+
+    connection
+      .start()
+      .then(() => console.log('SignalR Connected'))
+      .catch((err) => console.error('SignalR Connection Error:', err));
+
+    connection.on('ReceiveStoplineUpdate', (data) => {
+      console.log('Dữ liệu nhận được từ SignalR:', data);
+      setDataLean(data);
+    });
+
+    return () => {
+      connection.stop();
+    };
   }, [selectedLean]);
 
   // Cập nhật giá trị Lean vào cookies khi chọn mới
@@ -152,7 +169,7 @@ const AlertStopline = () => {
                   📅 Thời gian ngưng chuyền
                 </p>{' '}
                 <p className="font-bold text-4xl text-right">
-                  {new Date(dataLean.startDate).toLocaleTimeString('vi-VN')}
+                  {new Date(dataLean.startDate)?.toLocaleTimeString('vi-VN')}
                 </p>
               </Card>
               <Card

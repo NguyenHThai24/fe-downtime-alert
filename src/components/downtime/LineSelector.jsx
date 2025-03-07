@@ -15,6 +15,7 @@ const LineSelector = ({ listLine, onSelectLine, selectedFloor }) => {
     }
   }, [onSelectLine]);
 
+<<<<<<< HEAD
   // 🔥 Lọc danh sách line dựa trên selectedFloor
   const filteredLines = selectedFloor
     ? listLine
@@ -24,6 +25,11 @@ const LineSelector = ({ listLine, onSelectLine, selectedFloor }) => {
 
   // 🔥 Lấy danh sách line không trùng lặp
   const uniqueLines = [...new Set(filteredLines)];
+=======
+  const uniqueLines = Array.isArray(listLine)
+    ? [...new Set(listLine.map((item) => item.line))]
+    : [];
+>>>>>>> 0d3321fe2e98f4ef75a3de95a9c26c57bf54be45
 
   const handleSelect = (value) => {
     setSelectedValue(value);
@@ -64,7 +70,11 @@ const LineSelector = ({ listLine, onSelectLine, selectedFloor }) => {
               </div>
             ))
           ) : (
+<<<<<<< HEAD
             <p className="text-center p-2 text-gray-300">Không có line</p>
+=======
+            <div className="p-2 text-center text-gray-300">No data</div>
+>>>>>>> 0d3321fe2e98f4ef75a3de95a9c26c57bf54be45
           )}
         </div>
       )}
